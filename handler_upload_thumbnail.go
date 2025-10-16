@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"fmt"
 	"io"
 	"mime"
@@ -58,11 +56,8 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 		respondWithError(w, http.StatusBadRequest, "Thumbnail must be a JPEG or PNG image", nil)
 		return
 	}
-	
-	key := make([]byte, 32)
-	rand.Read(key)
-	fNameStr := base64.RawURLEncoding.EncodeToString(key)
-	assetPath := getAssetPath(fNameStr, mediaType)
+
+	assetPath := getAssetPath(mediaType)
 	assetDiskPath := cfg.getAssetDiskPath(assetPath)
 
 	dst, err := os.Create(assetDiskPath)
